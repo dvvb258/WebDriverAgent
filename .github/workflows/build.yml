@@ -28,6 +28,7 @@ jobs:
 
           # Remove embedded XCTest frameworks for iOS 17+
           rm -rf Payload/WebDriverAgentRunner-Runner.app/Frameworks/XC*.framework
+          rm -rf Payload/WebDriverAgentRunner-Runner.app/Frameworks/Testing.framework
 
           zip -r WebDriverAgentRunner.ipa Payload
 
