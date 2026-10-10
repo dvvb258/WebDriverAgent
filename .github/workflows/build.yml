@@ -15,6 +15,9 @@ jobs:
             CODE_SIGNING_ALLOWED=NO
           mkdir -p Payload
           cp -r ./build/Build/Products/*-iphoneos/WebDriverAgentRunner-Runner.app Payload/
+          
+          # Remove embedded XCTest frameworks for iOS 17+
+          rm -rf Payload/WebDriverAgentRunner-Runner.app/Frameworks/XC*.framework
           zip -r WebDriverAgentRunner.ipa Payload
       - name: Upload IPA
         uses: actions/upload-artifact@v4
