@@ -1,10 +1,19 @@
 name: Build WDA IPA
+
 on: [workflow_dispatch]
+
 jobs:
   build:
-    runs-on: macos-14
+    runs-on: macos-15
+
     steps:
       - uses: actions/checkout@v4
+
+      - name: Check Xcode Version
+        run: |
+          xcodebuild -version
+          xcodebuild -showsdks
+
       - name: Build Runner
         run: |
           xcodebuild build-for-testing \
@@ -13,12 +22,15 @@ jobs:
             -destination "generic/platform=iOS" \
             -derivedDataPath ./build \
             CODE_SIGNING_ALLOWED=NO
+
           mkdir -p Payload
           cp -r ./build/Build/Products/*-iphoneos/WebDriverAgentRunner-Runner.app Payload/
-          
+
           # Remove embedded XCTest frameworks for iOS 17+
           rm -rf Payload/WebDriverAgentRunner-Runner.app/Frameworks/XC*.framework
+
           zip -r WebDriverAgentRunner.ipa Payload
+
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
