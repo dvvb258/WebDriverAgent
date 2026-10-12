@@ -30,6 +30,9 @@ jobs:
           rm -rf Payload/WebDriverAgentRunner-Runner.app/Frameworks/XC*.framework
           rm -rf Payload/WebDriverAgentRunner-Runner.app/Frameworks/Testing.framework
 
+          # Remove debug symbols that should not be packaged into the IPA
+          find Payload -type d -name "*.dSYM" -prune -exec rm -rf {} +
+
           zip -r WebDriverAgentRunner.ipa Payload
 
       - name: Upload IPA
